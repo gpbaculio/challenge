@@ -1,13 +1,22 @@
 import React from 'react';
+import styled from 'styled-components';
 
 import { Header, Users } from './components';
 
+const UsersPageContainer = styled.div`
+  display: flex;
+  height: 100vh;
+  width: 100vw;
+  flex-direction: column;
+  overflow: hidden;
+`;
+
 const App: React.FC = () => {
   return (
-    <div className="vh-100 vw-100 d-flex flex-column overflow-hidden">
+    <UsersPageContainer>
       <Header />
       <Users />
-    </div>
+    </UsersPageContainer>
   );
 };
 

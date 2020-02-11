@@ -1,5 +1,6 @@
 import React, { useEffect, useState, useCallback } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
+import styled from 'styled-components';
 
 import { normalize, schema } from 'normalizr';
 import * as api from '../api';
@@ -12,6 +13,19 @@ import {
 
 import User from './User';
 import Loading from './Loading';
+
+const UserList = styled.ul`
+  margin-top: 0;
+  padding-left: 0;
+  overflow-y: scroll;
+  overflow-x: hidden;
+  position: relative;
+  list-style-type: none;
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  margin-bottom: 0;
+`;
 
 const Users = () => {
   const [page, setPage] = useState(1);
@@ -45,10 +59,19 @@ const Users = () => {
   );
 
   const handleScroll = (e: React.UIEvent<HTMLUListElement>) => {
-    const atBottomScroll =
-      e.currentTarget.scrollHeight - Math.ceil(e.currentTarget.scrollTop) ===
-      e.currentTarget.clientHeight;
-    if (atBottomScroll && hasMore && !loading) setPage(page + 1);
+    const scrollContainerBottomPosition = Math.round(
+      e.currentTarget.scrollTop + e.currentTarget.clientHeight
+    );
+    const scrollPosition = Math.round(
+      e.currentTarget.scrollHeight - e.currentTarget.offsetTop
+    );
+    if (
+      scrollPosition <= scrollContainerBottomPosition &&
+      hasMore &&
+      !loading
+    ) {
+      setPage(page + 1);
+    }
   };
 
   //fetch on page change and didmount since page = 1
@@ -64,16 +87,14 @@ const Users = () => {
   }, [fetchUsers, page, dispatch]);
 
   return (
-    <ul
-      style={{ overflowY: 'scroll' }}
-      className="position-relative mb-0 flex-grow-1 flex-column list-unstyled d-flex"
-      onScroll={handleScroll}
-    >
-      {Object.keys(users).map((userId, idx) => {
-        const user = users[userId];
-        return <User key={`${idx}:${user.first_name}`} {...{ user }} />;
-      })}
-      {loading && hasMore && <Loading />}
+    <>
+      <UserList onScroll={handleScroll}>
+        {Object.keys(users).map((userId, idx) => {
+          const user = users[userId];
+          return <User key={`${idx}:${user.first_name}`} {...{ user }} />;
+        })}
+        {loading && hasMore && <Loading />}
+      </UserList>
       {!hasMore && (
         <div
           style={{ color: '#fff', backgroundColor: 'rgba(0,0,0,0.9)' }}
@@ -82,7 +103,7 @@ const Users = () => {
           No more users
         </div>
       )}
-    </ul>
+    </>
   );
 };
 

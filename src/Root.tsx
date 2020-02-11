@@ -1,10 +1,10 @@
-import React, { StatelessComponent } from 'react';
+import React from 'react';
 import { Provider } from 'react-redux';
 
 import { store } from './store';
 import App from './App';
 
-const Root: StatelessComponent = () => (
+const Root = () => (
   <Provider store={store}>
     <App />
   </Provider>

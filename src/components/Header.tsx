@@ -1,10 +1,18 @@
 import React from 'react';
-import { Navbar, NavbarBrand } from 'reactstrap';
+import styled from 'styled-components';
 
-const Example = () => (
-  <Navbar color="light" light className="justify-content-center">
-    <NavbarBrand href="/">Users</NavbarBrand>
-  </Navbar>
+const HeaderContainer = styled.div`
+  width: 100vw;
+  text-align: center;
+  padding-top: 0.5rem;
+  padding-bottom: 0.5rem;
+  background-color: #f8f9fa;
+`;
+
+const Header = () => (
+  <HeaderContainer>
+    <h2>Users</h2>
+  </HeaderContainer>
 );
 
-export default Example;
+export default Header;
